@@ -28,18 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fJ2H));
             this.grpbJson = new System.Windows.Forms.GroupBox();
-            this.txtbJsonFIleLocation = new System.Windows.Forms.TextBox();
-            this.lblJsonFileLocation = new System.Windows.Forms.Label();
             this.btnJsonFileLocation = new System.Windows.Forms.Button();
+            this.lblJsonFileLocation = new System.Windows.Forms.Label();
+            this.txtbJsonFileLocation = new System.Windows.Forms.TextBox();
             this.grpbHtml = new System.Windows.Forms.GroupBox();
+            this.lblHtmlFileName = new System.Windows.Forms.Label();
+            this.txtbHtmlFileName = new System.Windows.Forms.TextBox();
             this.btnHtmlFileLocation = new System.Windows.Forms.Button();
             this.lblHtmlFileLocation = new System.Windows.Forms.Label();
             this.txtbHtmlFileLocation = new System.Windows.Forms.TextBox();
-            this.lblHtmlFileName = new System.Windows.Forms.Label();
-            this.txtbHtmlFileName = new System.Windows.Forms.TextBox();
             this.btnCreateHtmlFile = new System.Windows.Forms.Button();
             this.btnShowHtmlFile = new System.Windows.Forms.Button();
+            this.opnfdJsonFile = new System.Windows.Forms.OpenFileDialog();
+            this.fldbdHtmlFileLocation = new System.Windows.Forms.FolderBrowserDialog();
             this.grpbJson.SuspendLayout();
             this.grpbHtml.SuspendLayout();
             this.SuspendLayout();
@@ -48,7 +51,7 @@
             // 
             this.grpbJson.Controls.Add(this.btnJsonFileLocation);
             this.grpbJson.Controls.Add(this.lblJsonFileLocation);
-            this.grpbJson.Controls.Add(this.txtbJsonFIleLocation);
+            this.grpbJson.Controls.Add(this.txtbJsonFileLocation);
             this.grpbJson.Location = new System.Drawing.Point(12, 12);
             this.grpbJson.Name = "grpbJson";
             this.grpbJson.Size = new System.Drawing.Size(464, 121);
@@ -56,12 +59,15 @@
             this.grpbJson.TabStop = false;
             this.grpbJson.Text = "JSON";
             // 
-            // txtbJsonFIleLocation
+            // btnJsonFileLocation
             // 
-            this.txtbJsonFIleLocation.Location = new System.Drawing.Point(27, 74);
-            this.txtbJsonFIleLocation.Name = "txtbJsonFIleLocation";
-            this.txtbJsonFIleLocation.Size = new System.Drawing.Size(330, 26);
-            this.txtbJsonFIleLocation.TabIndex = 0;
+            this.btnJsonFileLocation.Location = new System.Drawing.Point(363, 74);
+            this.btnJsonFileLocation.Name = "btnJsonFileLocation";
+            this.btnJsonFileLocation.Size = new System.Drawing.Size(75, 26);
+            this.btnJsonFileLocation.TabIndex = 2;
+            this.btnJsonFileLocation.Text = "Search";
+            this.btnJsonFileLocation.UseVisualStyleBackColor = true;
+            this.btnJsonFileLocation.Click += new System.EventHandler(this.btnJsonFileLocation_Click);
             // 
             // lblJsonFileLocation
             // 
@@ -72,14 +78,13 @@
             this.lblJsonFileLocation.TabIndex = 1;
             this.lblJsonFileLocation.Text = "File location:";
             // 
-            // btnJsonFileLocation
+            // txtbJsonFileLocation
             // 
-            this.btnJsonFileLocation.Location = new System.Drawing.Point(354, 74);
-            this.btnJsonFileLocation.Name = "btnJsonFileLocation";
-            this.btnJsonFileLocation.Size = new System.Drawing.Size(75, 26);
-            this.btnJsonFileLocation.TabIndex = 2;
-            this.btnJsonFileLocation.Text = "Search";
-            this.btnJsonFileLocation.UseVisualStyleBackColor = true;
+            this.txtbJsonFileLocation.Location = new System.Drawing.Point(27, 74);
+            this.txtbJsonFileLocation.Name = "txtbJsonFileLocation";
+            this.txtbJsonFileLocation.Size = new System.Drawing.Size(340, 26);
+            this.txtbJsonFileLocation.TabIndex = 0;
+            this.txtbJsonFileLocation.TextChanged += new System.EventHandler(this.txtbJsonFileHtmlFile_TextChanged);
             // 
             // grpbHtml
             // 
@@ -94,31 +99,6 @@
             this.grpbHtml.TabIndex = 3;
             this.grpbHtml.TabStop = false;
             this.grpbHtml.Text = "HTML";
-            // 
-            // btnHtmlFileLocation
-            // 
-            this.btnHtmlFileLocation.Location = new System.Drawing.Point(354, 126);
-            this.btnHtmlFileLocation.Name = "btnHtmlFileLocation";
-            this.btnHtmlFileLocation.Size = new System.Drawing.Size(75, 26);
-            this.btnHtmlFileLocation.TabIndex = 2;
-            this.btnHtmlFileLocation.Text = "Set";
-            this.btnHtmlFileLocation.UseVisualStyleBackColor = true;
-            // 
-            // lblHtmlFileLocation
-            // 
-            this.lblHtmlFileLocation.AutoSize = true;
-            this.lblHtmlFileLocation.Location = new System.Drawing.Point(23, 93);
-            this.lblHtmlFileLocation.Name = "lblHtmlFileLocation";
-            this.lblHtmlFileLocation.Size = new System.Drawing.Size(97, 20);
-            this.lblHtmlFileLocation.TabIndex = 1;
-            this.lblHtmlFileLocation.Text = "File location:";
-            // 
-            // txtbHtmlFileLocation
-            // 
-            this.txtbHtmlFileLocation.Location = new System.Drawing.Point(27, 126);
-            this.txtbHtmlFileLocation.Name = "txtbHtmlFileLocation";
-            this.txtbHtmlFileLocation.Size = new System.Drawing.Size(330, 26);
-            this.txtbHtmlFileLocation.TabIndex = 0;
             // 
             // lblHtmlFileName
             // 
@@ -135,6 +115,34 @@
             this.txtbHtmlFileName.Name = "txtbHtmlFileName";
             this.txtbHtmlFileName.Size = new System.Drawing.Size(149, 26);
             this.txtbHtmlFileName.TabIndex = 3;
+            this.txtbHtmlFileName.TextChanged += new System.EventHandler(this.txtbJsonFileHtmlFile_TextChanged);
+            // 
+            // btnHtmlFileLocation
+            // 
+            this.btnHtmlFileLocation.Location = new System.Drawing.Point(363, 126);
+            this.btnHtmlFileLocation.Name = "btnHtmlFileLocation";
+            this.btnHtmlFileLocation.Size = new System.Drawing.Size(75, 26);
+            this.btnHtmlFileLocation.TabIndex = 2;
+            this.btnHtmlFileLocation.Text = "Set";
+            this.btnHtmlFileLocation.UseVisualStyleBackColor = true;
+            this.btnHtmlFileLocation.Click += new System.EventHandler(this.btnHtmlFileLocation_Click);
+            // 
+            // lblHtmlFileLocation
+            // 
+            this.lblHtmlFileLocation.AutoSize = true;
+            this.lblHtmlFileLocation.Location = new System.Drawing.Point(23, 93);
+            this.lblHtmlFileLocation.Name = "lblHtmlFileLocation";
+            this.lblHtmlFileLocation.Size = new System.Drawing.Size(97, 20);
+            this.lblHtmlFileLocation.TabIndex = 1;
+            this.lblHtmlFileLocation.Text = "File location:";
+            // 
+            // txtbHtmlFileLocation
+            // 
+            this.txtbHtmlFileLocation.Location = new System.Drawing.Point(27, 126);
+            this.txtbHtmlFileLocation.Name = "txtbHtmlFileLocation";
+            this.txtbHtmlFileLocation.Size = new System.Drawing.Size(340, 26);
+            this.txtbHtmlFileLocation.TabIndex = 0;
+            this.txtbHtmlFileLocation.TextChanged += new System.EventHandler(this.txtbJsonFileHtmlFile_TextChanged);
             // 
             // btnCreateHtmlFile
             // 
@@ -144,6 +152,7 @@
             this.btnCreateHtmlFile.TabIndex = 5;
             this.btnCreateHtmlFile.Text = "Create";
             this.btnCreateHtmlFile.UseVisualStyleBackColor = true;
+            this.btnCreateHtmlFile.Click += new System.EventHandler(this.btnCreateHtmlFile_Click);
             // 
             // btnShowHtmlFile
             // 
@@ -153,6 +162,10 @@
             this.btnShowHtmlFile.TabIndex = 6;
             this.btnShowHtmlFile.Text = "Show";
             this.btnShowHtmlFile.UseVisualStyleBackColor = true;
+            // 
+            // opnfdJsonFile
+            // 
+            this.opnfdJsonFile.FileName = "openFileDialog1";
             // 
             // fJ2H
             // 
@@ -164,6 +177,7 @@
             this.Controls.Add(this.grpbHtml);
             this.Controls.Add(this.grpbJson);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.Name = "fJ2H";
@@ -181,7 +195,7 @@
         private System.Windows.Forms.GroupBox grpbJson;
         private System.Windows.Forms.Button btnJsonFileLocation;
         private System.Windows.Forms.Label lblJsonFileLocation;
-        private System.Windows.Forms.TextBox txtbJsonFIleLocation;
+        private System.Windows.Forms.TextBox txtbJsonFileLocation;
         private System.Windows.Forms.GroupBox grpbHtml;
         private System.Windows.Forms.Label lblHtmlFileName;
         private System.Windows.Forms.TextBox txtbHtmlFileName;
@@ -190,6 +204,8 @@
         private System.Windows.Forms.TextBox txtbHtmlFileLocation;
         private System.Windows.Forms.Button btnCreateHtmlFile;
         private System.Windows.Forms.Button btnShowHtmlFile;
+        private System.Windows.Forms.OpenFileDialog opnfdJsonFile;
+        private System.Windows.Forms.FolderBrowserDialog fldbdHtmlFileLocation;
     }
 }
 
