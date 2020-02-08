@@ -16,7 +16,7 @@ namespace J2H
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new fJ2H());
+            Application.Run(new J2H());
         }
     }
 }

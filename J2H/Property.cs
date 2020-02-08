@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace J2H
 {
-    public class HTML
+    public class Property
     {
-        public List<Element> elements { get; set; }
-
-        public HTML()
+        private J2H main_form;
+        public Property()
         {
 
         }

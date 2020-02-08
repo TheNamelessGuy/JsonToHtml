@@ -1,6 +1,6 @@
 ﻿namespace J2H
 {
-    partial class fJ2H
+    partial class J2H
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fJ2H));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(J2H));
             this.grpbJson = new System.Windows.Forms.GroupBox();
             this.btnJsonFileLocation = new System.Windows.Forms.Button();
             this.lblJsonFileLocation = new System.Windows.Forms.Label();
@@ -167,7 +167,7 @@
             // 
             this.opnfdJsonFile.FileName = "openFileDialog1";
             // 
-            // fJ2H
+            // J2H
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -177,10 +177,12 @@
             this.Controls.Add(this.grpbHtml);
             this.Controls.Add(this.grpbJson);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
-            this.Name = "fJ2H";
+            this.Name = "J2H";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "J2H";
             this.grpbJson.ResumeLayout(false);
             this.grpbJson.PerformLayout();
