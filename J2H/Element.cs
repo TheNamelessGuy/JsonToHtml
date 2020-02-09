@@ -15,9 +15,15 @@ namespace J2H
         public List<Property> properties { get; set; }
         public List<Content> content { get; set; }
 
-        public Element(string element_name, dynamic element_value)
+        public Element(J2H main_form, dynamic element)
         {
-            this.element_name = element_name;
+            this.main_form = main_form;
+
+            this.properties = new List<Property>();
+            this.content = new List<Content>();
+            this.element_name = element.Name;
+
+            fillLists(element.Value);
         }
 
         private void fillLists(dynamic element_value)
@@ -25,20 +31,34 @@ namespace J2H
             Content new_content;
             Property new_property;
 
-            if (element_value.GetType().ToString().Contains("Newtonsoft.Json.Linq."))
+            if (element_value.GetType().ToString() != "Newtonsoft.Json.Linq.JValue")
             {
-                if (main_form.checkIfHtmlTag(element_value.Name))
+                foreach (JProperty value in element_value.Properties())
                 {
-                    new_content = new Content(main_form, element_value);
-                }
-                else
-                {
-                    new_property = new Property();
+                    if (value.GetType().ToString().Contains("Newtonsoft.Json.Linq."))
+                    {
+                        if (this.main_form.checkIfHtmlTag(value.Name))
+                        {
+                            new_content = new Content(main_form, value);
+                            this.content.Add(new_content);
+                        }
+                        else
+                        {
+                            new_property = new Property(this.main_form, value);
+                            this.properties.Add(new_property);
+                        }
+                    }
+                    else
+                    {
+                        new_content = new Content(main_form, value);
+                        this.content.Add(new_content);
+                    }
                 }
             }
             else
             {
                 new_content = new Content(main_form, element_value);
+                this.content.Add(new_content);
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -199,13 +200,18 @@ namespace J2H
 
         private void btnCreateHtmlFile_Click(object sender, EventArgs e)
         {
+            string json_file;
+
             try
             {
-                html_page = new HTMLPage(this , this.opnfdJsonFile);
+                StreamReader stream_reader = new StreamReader(this.opnfdJsonFile.FileName);
+                json_file = stream_reader.ReadToEnd();
+                html_page = new HTMLPage(this , JsonConvert.DeserializeObject(json_file));
+                stream_reader.Close();
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(error.Message + "\n" + error.Source, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
