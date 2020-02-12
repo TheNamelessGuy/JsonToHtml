@@ -113,7 +113,7 @@
             // 
             this.txtbHtmlFileName.Location = new System.Drawing.Point(84, 42);
             this.txtbHtmlFileName.Name = "txtbHtmlFileName";
-            this.txtbHtmlFileName.Size = new System.Drawing.Size(149, 26);
+            this.txtbHtmlFileName.Size = new System.Drawing.Size(113, 26);
             this.txtbHtmlFileName.TabIndex = 3;
             this.txtbHtmlFileName.TextChanged += new System.EventHandler(this.txtbJsonFileHtmlFile_TextChanged);
             // 
@@ -162,6 +162,7 @@
             this.btnShowHtmlFile.TabIndex = 6;
             this.btnShowHtmlFile.Text = "Show";
             this.btnShowHtmlFile.UseVisualStyleBackColor = true;
+            this.btnShowHtmlFile.Click += new System.EventHandler(this.btnShowHtmlFile_Click);
             // 
             // opnfdJsonFile
             // 
