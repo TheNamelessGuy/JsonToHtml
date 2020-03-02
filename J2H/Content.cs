@@ -10,8 +10,9 @@ namespace J2H
 {
     public class Content
     {
+        // Variable declaration
         private J2H main_form;
-        public string type { get; }
+        public string type { get; set; }
         public string value_string { get; set; }
         public Element value_element { get; set; }
 
@@ -19,6 +20,11 @@ namespace J2H
         {
             this.main_form = main_form;
 
+            this.fillContent(value);
+        }
+
+        private void fillContent(dynamic value)
+        {
             // Checks what kind of content it is and if it is not a string create a element and otherwise fills the string sets type string
             if (value.GetType().ToString() != "Newtonsoft.Json.Linq.JValue")
             {

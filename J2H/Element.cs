@@ -53,8 +53,17 @@ namespace J2H
                             {
                                 foreach (dynamic value_value in value.Value)
                                 {
-                                    new_jobject = new JObject();
-                                    new_jobject.Add(value.Name, value_value);
+                                    new_jobject = new JObject(new JProperty(value.Name, value_value));
+
+                                    new_content = new Content(this.main_form, new_jobject.First);
+                                    this.content.Add(new_content);
+                                }
+                            }
+                            else if (value.Name.ToLower() == "meta")
+                            {
+                                foreach (dynamic value_value in value.Value)
+                                {
+                                    new_jobject = new JObject(new JProperty(value.Name, new JObject(value_value)));
 
                                     new_content = new Content(this.main_form, new_jobject.First);
                                     this.content.Add(new_content);
@@ -68,7 +77,23 @@ namespace J2H
                         }
                         else if (this.main_form.checkIfHtmlAttribute(value.Name.ToLower()) || value.Name.ToLower() == "attributes")
                         {
-                            if (value.Name.ToLower() == "attributes")
+                            if (this.name.ToLower() == "meta")
+                            {
+                                if (value.Name.ToLower() == "charset")
+                                {
+                                    new_property = new Property(this.main_form, value);
+                                    this.properties.Add(new_property);
+                                }
+                                else
+                                {
+                                    new_property = new Property(this.main_form, new JProperty("name", value.Name));
+                                    this.properties.Add(new_property);
+
+                                    new_property = new Property(this.main_form, new JProperty("content", value.Value));
+                                    this.properties.Add(new_property);
+                                }
+                            }
+                            else if (value.Name.ToLower() == "attributes")
                             {
                                 attributes = value.Value;
 
@@ -126,7 +151,7 @@ namespace J2H
 
                     if (property.type == "String")
                     {
-                        element += $"{property.convertToString(false, true, false)}\n";
+                        element += $"{property.convertToString(false, true, false, false)}\n";
                     }
                 }
 
@@ -153,7 +178,7 @@ namespace J2H
                         {
                             foreach (Property property in this.properties)
                             {
-                                element += property.convertToString(true, false, false);
+                                element += property.convertToString(true, false, false, false);
                             }
                         }
 
@@ -178,11 +203,14 @@ namespace J2H
                         }
                     }
 
-                    // Creates tabs to pretify html file code
-                    for (int i = 0; i < tab_counter; i++)
-                        element += "\t";
+                    if (this.content.Any())
+                    {
+                        // Creates tabs to pretify html file code
+                        for (int i = 0; i < tab_counter; i++)
+                            element += "\t";
 
-                    element += $"</{this.name}>\n";
+                        element += $"</{this.name}>\n";
+                    }
                 }
             }
 
