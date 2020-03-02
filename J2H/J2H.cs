@@ -134,7 +134,6 @@ namespace J2H
             "sub",
             "summary",
             "sup",
-            "style",
             "table",
             "tbody",
             "td",
@@ -396,6 +395,7 @@ namespace J2H
         {
             string json_file;
             bool create_file = false;
+            this.all_html_tags.Add("style");
 
             try
             {
