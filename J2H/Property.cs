@@ -10,46 +10,44 @@ namespace J2H
 {
     public class Property
     {
-        private J2H main_form;
+        // Variable declaration
         public string type { get; set; }
         public string name { get; set; }
         public string value_string { get; set; }
         public List<Property> value_properties { get; set; }
 
-        public Property(J2H main_form, dynamic value)
+        public Property(dynamic value)
         {
-            this.main_form = main_form;
-
             this.value_properties = new List<Property>();
             this.name = value.Name;
 
+            this.fillProperty(value.Value);
+        }
+
+        // Fills the list with the properties
+        private void fillProperty(dynamic value)
+        {
+            Property new_property;
+
             // Checks if values value contains more values and creates them
-            if (value.Value.GetType().ToString() == "Newtonsoft.Json.Linq.JObject")
+            if (value.GetType().ToString() == "Newtonsoft.Json.Linq.JObject")
             {
                 this.type = "Properties";
-                this.fillList(value.Value);
+                foreach (JProperty value_value in value.Properties())
+                {
+                    new_property = new Property(value_value);
+                    this.value_properties.Add(new_property);
+                }
             }
             else
             {
                 this.type = "String";
-                this.value_string = value.Value;
-           }
-        }
-
-        // Fills the list with the properties
-        private void fillList(dynamic value_value)
-        {
-            Property new_property;
-
-            foreach (JProperty value in value_value.Properties())
-            {
-                new_property = new Property(this.main_form, value);
-                this.value_properties.Add(new_property);
+                this.value_string = value;
             }
         }
 
         // Converts to string and returns it
-        public string convertToString(bool parent_element, bool style_properties, bool class_properties)
+        public string convertToString(bool parent_element, bool style_properties, bool class_properties, bool final_attribute)
         {
             string return_property = "";
 
@@ -59,7 +57,10 @@ namespace J2H
 
                 foreach (Property property in this.value_properties)
                 {
-                    return_property += property.convertToString(false, false, false);
+                    if (property.Equals(this.value_properties.Last()))
+                        return_property += property.convertToString(false, false, false, true);
+                    else
+                        return_property += property.convertToString(false, false, false, false);
                 }
 
                 return_property += "\"";
@@ -78,17 +79,35 @@ namespace J2H
                     {
                         foreach (Property property in this.value_properties)
                         {
-                            if (this.name == "style")
+                            if (property.Equals(this.value_properties.Last()))
                             {
-                                return_property += property.convertToString(false, true, false);
-                            }
-                            else if (this.name == "class")
-                            {
-                                return_property += property.convertToString(false, false, true);
+                                if (this.name == "style")
+                                {
+                                    return_property += property.convertToString(false, true, false, true);
+                                }
+                                else if (this.name == "class")
+                                {
+                                    return_property += property.convertToString(false, false, true, true);
+                                }
+                                else
+                                {
+                                    return_property += property.convertToString(false, false, false, true);
+                                }
                             }
                             else
                             {
-                                return_property += property.convertToString(false, false, false);
+                                if (this.name == "style")
+                                {
+                                    return_property += property.convertToString(false, true, false, false);
+                                }
+                                else if (this.name == "class")
+                                {
+                                    return_property += property.convertToString(false, false, true, false);
+                                }
+                                else
+                                {
+                                    return_property += property.convertToString(false, false, false, false);
+                                }
                             }
                         }
                     }
@@ -97,17 +116,35 @@ namespace J2H
                 }
                 else
                 {
-                    if (style_properties)
+                    if (final_attribute)
                     {
-                        return_property += $"{this.name}:{this.value_string}; ";
-                    }
-                    else if (class_properties)
-                    {
-                        return_property += $"{this.value_string} ";
+                        if (style_properties)
+                        {
+                            return_property += $"{this.name}:{this.value_string};";
+                        }
+                        else if (class_properties)
+                        {
+                            return_property += $"{this.value_string}";
+                        }
+                        else
+                        {
+                            return_property += $"{this.name}={this.value_string}";
+                        }
                     }
                     else
                     {
-                        return_property += $"{this.name}={this.value_string}, ";
+                        if (style_properties)
+                        {
+                            return_property += $"{this.name}:{this.value_string}; ";
+                        }
+                        else if (class_properties)
+                        {
+                            return_property += $"{this.value_string} ";
+                        }
+                        else
+                        {
+                            return_property += $"{this.name}={this.value_string}, ";
+                        }
                     }
                 }
             }
