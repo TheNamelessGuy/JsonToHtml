@@ -11,29 +11,22 @@ namespace J2H
     public class Element
     {
         // Variable declaration
-        private J2H main_form;
         public string name { get; set; }
         public List<Property> properties { get; set; }
         public List<Content> content { get; set; }
 
         // Constructor, sets variables values
-        public Element(J2H main_form, dynamic element)
+        public Element(dynamic element, bool head_style_element)
         {
-            this.main_form = main_form;
-
             this.properties = new List<Property>();
             this.content = new List<Content>();
             this.name = element.Name;
 
-            fillLists(element.Value);
-
-            // Checks if the element is head and deletes style tag from list in main form
-            if (this.name.ToLower() == "head")
-                this.main_form.all_html_tags.Remove("style");
+            fillLists(element.Value, head_style_element);
         }
 
         // Fills the lists
-        private void fillLists(dynamic element_value)
+        private void fillLists(dynamic element_value, bool head_style_element)
         {
             Content new_content;
             Property new_property;
@@ -46,50 +39,21 @@ namespace J2H
                 {
                     if (value.GetType().ToString().Contains("Newtonsoft.Json.Linq."))
                     {
-                        if (this.main_form.checkIfHtmlTag(value.Name.ToLower()))
-                        {
-                            // Checks if elements property value is an array so it create multiple elements with the same name
-                            if (value.Value.GetType().ToString() == "Newtonsoft.Json.Linq.JArray")
-                            {
-                                foreach (dynamic value_value in value.Value)
-                                {
-                                    new_jobject = new JObject(new JProperty(value.Name, value_value));
-
-                                    new_content = new Content(this.main_form, new_jobject.First);
-                                    this.content.Add(new_content);
-                                }
-                            }
-                            else if (value.Name.ToLower() == "meta")
-                            {
-                                foreach (dynamic value_value in value.Value)
-                                {
-                                    new_jobject = new JObject(new JProperty(value.Name, new JObject(value_value)));
-
-                                    new_content = new Content(this.main_form, new_jobject.First);
-                                    this.content.Add(new_content);
-                                }
-                            }
-                            else
-                            {
-                                new_content = new Content(this.main_form, value);
-                                this.content.Add(new_content);
-                            }
-                        }
-                        else if (this.main_form.checkIfHtmlAttribute(value.Name.ToLower()) || value.Name.ToLower() == "attributes")
+                        if (value.Name.ToLower() == "attributes" || value.Name.ToLower() == "language" || this.name == "meta" || this.name == "link" || (head_style_element && this.name != "style"))
                         {
                             if (this.name.ToLower() == "meta")
                             {
                                 if (value.Name.ToLower() == "charset")
                                 {
-                                    new_property = new Property(this.main_form, value);
+                                    new_property = new Property(value);
                                     this.properties.Add(new_property);
                                 }
                                 else
                                 {
-                                    new_property = new Property(this.main_form, new JProperty("name", value.Name));
+                                    new_property = new Property(new JProperty("name", value.Name));
                                     this.properties.Add(new_property);
 
-                                    new_property = new Property(this.main_form, new JProperty("content", value.Value));
+                                    new_property = new Property(new JProperty("content", value.Value));
                                     this.properties.Add(new_property);
                                 }
                             }
@@ -99,32 +63,69 @@ namespace J2H
 
                                 foreach (JProperty property in attributes.Properties())
                                 {
-                                    new_property = new Property(this.main_form, property);
+                                    new_property = new Property(property);
                                     this.properties.Add(new_property);
                                 }
                             }
                             else
                             {
-                                new_property = new Property(this.main_form, value);
+                                new_property = new Property(value);
                                 this.properties.Add(new_property);
                             }
                         }
                         else
                         {
-                            new_content = new Content(this.main_form, value);
-                            this.content.Add(new_content);
+                            // Checks if elements property value is an array so it create multiple elements with the same name
+                            if (value.Value.GetType().ToString() == "Newtonsoft.Json.Linq.JArray")
+                            {
+                                foreach (dynamic value_value in value.Value)
+                                {
+                                    new_jobject = new JObject(new JProperty(value.Name, value_value));
+
+                                    new_content = new Content(new_jobject.First, false);
+                                    this.content.Add(new_content);
+                                }
+                            }
+                            else if (value.Name.ToLower() == "meta")
+                            {
+                                foreach (dynamic value_value in value.Value)
+                                {
+                                    new_jobject = new JObject(new JProperty(value.Name, new JObject(value_value)));
+
+                                    new_content = new Content(new_jobject.First, false);
+                                    this.content.Add(new_content);
+                                }
+                            }
+                            else if (value.Name.ToLower() == "style")
+                            {
+                                new_content = new Content(value, true);
+                                this.content.Add(new_content);
+                            }
+                            else
+                            {
+                                if (head_style_element)
+                                {
+                                    new_content = new Content(value, head_style_element);
+                                    this.content.Add(new_content);
+                                }
+                                else
+                                {
+                                    new_content = new Content(value, false);
+                                    this.content.Add(new_content);
+                                }
+                            }
                         }
                     }
                     else
                     {
-                        new_content = new Content(this.main_form, value);
+                        new_content = new Content(value, false);
                         this.content.Add(new_content);
                     }
                 }
             }
             else
             {
-                new_content = new Content(this.main_form, element_value);
+                new_content = new Content(element_value, false);
                 this.content.Add(new_content);
             }
         }

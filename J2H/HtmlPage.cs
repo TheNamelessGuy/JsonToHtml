@@ -33,9 +33,9 @@ namespace J2H
             // Checks if there is a "doctype" in the file and sets it first
             foreach (JProperty element in json_file.Properties())
             {
-                if (!main_form.checkIfHtmlTag(element.Name.ToLower()) && element.Name.ToLower() == "doctype")
+                if (element.Name.ToLower() == "doctype")
                 {
-                    new_element = new Element(main_form, element);
+                    new_element = new Element(element, false);
                     this.elements.Add(new_element);
 
                     json_file.Property(element.Name).Remove();
@@ -45,7 +45,7 @@ namespace J2H
 
             // Create html tag and adds it to the list
             new_json_file.Add("html", json_file);
-            new_element = new Element(main_form, new_json_file.First);
+            new_element = new Element(new_json_file.First, false);
             this.elements.Add(new_element);
         }
 
